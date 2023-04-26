@@ -12,41 +12,76 @@ public class GameBoard {
 
     private final static int GROUND_TILE_WIDTH = 16;
     private final static int GROUND_TILE_HEIGHT = 16;
+    private final static int OBJECT_TILE_HEIGHT = 50;
+    private final static int OBJECT_TILE_WIDTH = 40;
     private Texture txGround;
     private Texture txObject;
-    private TextureRegion[][] textures;
-
+    private TextureRegion[][] txGrounds;
+    private TextureRegion[][] txObjects;
     String[] groundMaps = {
-            "1222222222222222222222222222222222222223",
-            "4                                      5",
-            "4  RRRRRRRRRRRRRRRRRRRRRRRR            5",
-            "4                                      5",
-            "4                                      5",
-            "4                                      5",
-            "4                                      5",
-            "4                                      5",
-            "4                                      5",
-            "4                       RRRR           5",
-            "4                        rrrr          5",
-            "4            /|             fff        5",
-            "4            54                        5",
-            "4            54                        5",
-            "4            54                        5",
-            "4            54                        5",
-            "4            54        F               5",
-            "4       g    uU                        5",
-            "4                                      5",
-            "4                      F               5",
-            "4        g                             5",
-            "4                                      5",
-            "4          g                           5",
-            "4                                      5",
-            "4                                      5",
-            "4                  G                   5",
-            "4      g                               5",
-            "4                                      5",
-            "4                                      5",
-            "6777777777777777777777777777777777777778",
+            "                                50004   ",
+            "                                u3004   ",
+            "   RRRRRRRRRRRRRRRRRRRRRRRR      u304   ",
+            "                                  504   ",
+            "           /777777777777777|      504   ",
+            "           50000000000000004   /77804   ",
+            "           50122222222222304   500004   ",
+            "           504           504   50122U   ",
+            "           504           504   504      ",
+            "           504           506777804      ",
+            "           u2U           500000004      ",
+            "                         50122222U      ",
+            "                         504            ",
+            "           /7|           504            ",
+            "           504           u2U            ",
+            "           504                          ",
+            "           504                          ",
+            "           504                          ",
+            "           504                          ",
+            "      /7777804            0000000       ",
+            "      50000004                          ",
+            "      5012222U                          ",
+            "      504                               ",
+            "    /7804                               ",
+            "  /780004                               ",
+            "  500012U                               ",
+            "7780004                                 ",
+            "000001U                                 ",
+            "000004                                  ",
+            "000004                                  ",
+    };
+
+    String[] objectMaps = {
+            "AAAAAAAAA                               ",
+            "AAAAAAAAAAAAA                           ",
+            "AAAAAAAAAAA                             ",
+            "                                        ",
+            "                                        ",
+            "                                        ",
+            "                                        ",
+            "                                        ",
+            "                                        ",
+            "                                        ",
+            "                                        ",
+            "                                        ",
+            "                                        ",
+            "                                        ",
+            "                                        ",
+            "                                        ",
+            "                                        ",
+            "                                        ",
+            "                                        ",
+            "                                        ",
+            "                                        ",
+            "                                        ",
+            "                                        ",
+            "                                        ",
+            "                                        ",
+            "                                        ",
+            "                                        ",
+            "                                        ",
+            "                                        ",
+            "                                        ",
     };
 
     Tile[][] gameboard;
@@ -54,6 +89,7 @@ public class GameBoard {
 
     static {
         groundPosByType.put(' ', new Vector2(1, 1));
+        groundPosByType.put('0', new Vector2(6,10));
         groundPosByType.put('1', new Vector2(0, 0));
         groundPosByType.put('2', new Vector2(0, 1));
         groundPosByType.put('3', new Vector2(0, 2));
@@ -74,11 +110,17 @@ public class GameBoard {
         groundPosByType.put('U', new Vector2(2, 6));
     }
 
+    private static final HashMap<Character, Vector2> objectPosByType = new HashMap<>();
+
+    static {
+        objectPosByType.put('A', new Vector2(0, 0));
+    }
 
     public void create() {
         txGround = new Texture("game-assets/tilesets/GroundTiles/NewTiles/DarkerGrassHillTiles.png");
-        txObject = new Texture("game-assets/tilesets/GroundTiles/NewTiles/DarkerGrassHillTiles.png");
-        textures = TextureRegion.split(txGround, GROUND_TILE_WIDTH, GROUND_TILE_HEIGHT);
+        txObject = new Texture("game-assets/objects/TreeAnimations/TreeSptites.png");
+        txGrounds = TextureRegion.split(txGround, GROUND_TILE_WIDTH, GROUND_TILE_HEIGHT);
+        txObjects = TextureRegion.split(txObject, OBJECT_TILE_WIDTH, OBJECT_TILE_HEIGHT);
         gameboard = createTilesArray();
     }
 
@@ -101,8 +143,17 @@ public class GameBoard {
 
         for (int i = 0; i < groundMaps.length; i++) {
             for (int j = 0; j < groundMaps[i].length(); j++) {
-                //System.out.println("x : " + Math.abs(i-groundMaps.length+1) + " y : " + Math.abs(j-groundMaps[0].length()+1) + " groundType : " + groundType);
-                tilesArray[j][Math.abs(i-groundMaps.length+1)] = new Tile(groundPosByType, textures, groundMaps[i].charAt(j));
+                Vector2 positionGroundTexture = groundPosByType.get(groundMaps[i].charAt(j));
+                TextureRegion groundTexture = txGrounds[(int) positionGroundTexture.x][(int) positionGroundTexture.y];
+
+                Vector2 positionObjectTexture = objectPosByType.get(objectMaps[i].charAt(j));
+                TextureRegion objectTexture;
+                if (positionObjectTexture == null){
+                    objectTexture= null;
+                }else {
+                    objectTexture = txObjects[(int) positionObjectTexture.x][(int) positionObjectTexture.y];
+                }
+                tilesArray[j][Math.abs(i-groundMaps.length+1)] = new Tile(groundTexture,objectTexture);
             }
         }
 
