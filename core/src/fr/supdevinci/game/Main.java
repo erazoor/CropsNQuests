@@ -7,26 +7,22 @@ import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.scenes.scene2d.InputEvent;
-import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
-import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
-import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.ScreenUtils;
 
 public class Main extends ApplicationAdapter implements InputProcessor {
 
 	// Graphical data
 	private SpriteBatch batch;
-	private Texture txInventoryBg, txInventoryBox, txSettingsBg, txSettingsBox, txResumeBox, txResumeBoxClicked;
+	private Texture txInventoryBg, txInventoryBox, txSettingsBg, txSettingsBox, txResumeBox;
 	private TextureRegion inventoryBg, inventoryBox, settingsBg, settingsBox;
-	private TextureRegion[][] resumeBox, resumeBoxClicked;
+	private TextureRegion[][] resumeBox;
 	private boolean inventoryVisible = false;
 	private boolean settingsVisible = true;
-	private boolean isResumeClicked = false;
+	private boolean resumeClicked = false;
 
 	@Override
 	public void create () {
+
 		txInventoryBg = new Texture(".././assets/game-assets/gui/Setting menu.png");
 		inventoryBg = new TextureRegion(txInventoryBg, txInventoryBg.getWidth()/2, 0, txInventoryBg.getWidth()/2, txInventoryBg.getHeight());
 
@@ -39,22 +35,8 @@ public class Main extends ApplicationAdapter implements InputProcessor {
 		txResumeBox = new Texture(".././assets/game-assets/gui/UI Big Play Button.png");
 		resumeBox = TextureRegion.split(txResumeBox, txResumeBox.getWidth()/2, txResumeBox.getHeight()/2);
 
-		txResumeBoxClicked = new Texture(".././assets/game-assets/gui/UI Big Play Button.png");
-		resumeBoxClicked = TextureRegion.split(txResumeBoxClicked, txResumeBoxClicked.getWidth()/2, txResumeBoxClicked.getHeight()/2);
-
 		txSettingsBox = new Texture(".././assets/game-assets/gui/UI Big Play Button.png");
 		settingsBox = new TextureRegion(txSettingsBox, 0,0, txSettingsBox.getWidth()/2, txSettingsBox.getHeight()/2);
-
-		// Create a clickable button
-		Drawable drawable = new TextureRegionDrawable(resumeBox[0][0]);
-		Drawable drawableClicked = new TextureRegionDrawable(resumeBoxClicked[0][1]);
-		ImageButton button = new ImageButton(drawable, drawableClicked);
-		button.addListener(new ClickListener() {
-			@Override
-			public void clicked(InputEvent event, float x, float y) {
-				System.out.println("Clicked");
-			}
-		});
 
 		batch = new SpriteBatch();
 		Gdx.input.setInputProcessor(this);
@@ -82,31 +64,32 @@ public class Main extends ApplicationAdapter implements InputProcessor {
 	public boolean keyTyped(char character) {
 		return false;
 	}
-	private boolean isResumeClicked(int screenX, int screenY) {
-		int xPos = 228;
-		int yPos = 255;
-		int width = 192;
-		int height = 65;
 
-		return (screenX >= xPos && screenX <= xPos + width && screenY >= yPos && screenY <= yPos + height);
+	private boolean isResumeClicked(int screenX, int screenY) {
+		int xPos = 235;
+		int yPos = 168;
+		int width = 178;
+		int height = 50;
+
+		return screenX >= xPos && screenX <= xPos + width && screenY >= yPos && screenY <= yPos + height;
 	}
 	@Override
 	public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-		if (button == Input.Buttons.LEFT && isResumeClicked(screenX, screenY)) {
-			isResumeClicked = true;
-			return true;
+		if(settingsVisible && isResumeClicked(screenX, screenY)) {
+			resumeClicked = true;
 		}
 		return false;
 	}
 
 	@Override
 	public boolean touchUp(int screenX, int screenY, int pointer, int button) {
-		if (isResumeClicked && button == Input.Buttons.LEFT) {
-			isResumeClicked = false;
-			// Handle resume button click
-			return true;
+		if(settingsVisible) {
+			if(resumeClicked && isResumeClicked(screenX, screenY)) {
+				resumeClicked = false;
+				settingsVisible = false;
+				return true;
+			}
 		}
-		isResumeClicked = false;
 		return false;
 	}
 
@@ -127,7 +110,8 @@ public class Main extends ApplicationAdapter implements InputProcessor {
 
 	@Override
 	public void render () {
-		ScreenUtils.clear(1, 0, 0, 1);
+		ScreenUtils.clear(0, 120, 0.7f, 0);
+
 		batch.begin();
 		if(inventoryVisible) {
 			int xPos = 380;
@@ -150,13 +134,7 @@ public class Main extends ApplicationAdapter implements InputProcessor {
 			int xPos = 228;
 			int yPos = 255;
 			batch.draw(settingsBg, (float) (txSettingsBg.getWidth() /1.35), (float) (txSettingsBg.getHeight() /1.5), 270, 320);
-			if(isResumeClicked) {
-				batch.draw(resumeBoxClicked[1][1], xPos, yPos, 192, 65);
-				System.out.println("Resume clicked");
-			} else {
-				batch.draw(resumeBox[1][0], 228, 255, 192, 65);
-				System.out.println("Resume not clicked");
-			}
+			batch.draw(resumeBox[1][resumeClicked ? 1:0], xPos, yPos, 192, 64);
 			yPos -= 63;
 			for(int i = 0; i < 2 ; i++) {
 				batch.draw(settingsBox, xPos, yPos, txSettingsBox.getWidth(), txSettingsBox.getHeight());
@@ -174,6 +152,5 @@ public class Main extends ApplicationAdapter implements InputProcessor {
 		txSettingsBg.dispose();
 		txSettingsBox.dispose();
 		txResumeBox.dispose();
-		txResumeBoxClicked.dispose();
 	}
 }
