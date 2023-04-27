@@ -1,4 +1,4 @@
-package fr.supdevinci.game.tile;
+package fr.supdevinci.game;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -16,12 +16,12 @@ public class Tile {
     public final static int WIDTH = 16;
     public final static int HEIGHT = 16;
 
-    public Tile(HashMap<Character, Vector2> groundPosByType, TextureRegion[][] groundTiles, char groundType, int objectType) {
+    /*public Tile(HashMap<Character, Vector2> groundPosByType, TextureRegion[][] groundTiles, char groundType, int objectType) {
         this.groundType = groundType;
         Vector2 tilePos = groundPosByType.get(groundType);
         this.ground = groundTiles[(int)tilePos.x][(int)tilePos.y];
         this.object = null;
-    }
+    }*/
 
     public Tile(TextureRegion ground, TextureRegion Object) {
         this.ground = ground;
@@ -29,9 +29,9 @@ public class Tile {
         groundType = 0;
     }
 
-    public Tile(HashMap<Character, Vector2> groundPosByType, TextureRegion[][] groundTiles, char groundType) {
+    /*public Tile(HashMap<Character, Vector2> groundPosByType, TextureRegion[][] groundTiles, char groundType) {
        this(groundPosByType, groundTiles, groundType, -1);
-    }
+    }*/
     public void draw(SpriteBatch batch, int x, int y) {
         batch.draw(ground, x*WIDTH, y*HEIGHT, WIDTH, HEIGHT);
         if(object != null)

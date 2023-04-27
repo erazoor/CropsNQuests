@@ -17,7 +17,6 @@ public class Main extends ApplicationAdapter {
 		batch = new SpriteBatch();
 		txGround = new Texture("game-assets/tilesets/GroundTiles/NewTiles/DarkerGrassHillTiles.png");
 		gameBoard = new GameBoard();
-
 		gameBoard.create();
 	}
 

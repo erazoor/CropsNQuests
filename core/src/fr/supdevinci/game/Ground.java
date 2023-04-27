@@ -1,4 +1,22 @@
 package fr.supdevinci.game;
 
-public class Ground {
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
+
+public class Ground implements Entity {
+    private TextureRegion[][] texture;
+
+    @Override
+    public void create() {
+
+    }
+
+    @Override
+    public void makeMove() {
+
+    }
+
+    @Override
+    public TextureRegion getTexture(char c) {
+        return null;
+    }
 }

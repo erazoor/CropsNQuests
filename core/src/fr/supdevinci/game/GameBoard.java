@@ -4,7 +4,6 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
-import fr.supdevinci.game.tile.Tile;
 
 import java.util.HashMap;
 
@@ -15,13 +14,18 @@ public class GameBoard {
     private final static int OBJECT_TILE_HEIGHT = 50;
     private final static int OBJECT_TILE_WIDTH = 40;
     private Texture txGround;
-    private Texture txObject;
+    //private Texture txObject;
     private TextureRegion[][] txGrounds;
-    private TextureRegion[][] txObjects;
+
+    EntityFactory entityFactory;
+
+    //private Entity entity;
+
+    //private TextureRegion[][] txObjects;
     String[] groundMaps = {
             "                                50004   ",
             "                                u3004   ",
-            "   RRRRRRRRRRRRRRRRRRRRRRRR      u304   ",
+            "                                 u304   ",
             "                                  504   ",
             "           /777777777777777|      504   ",
             "           50000000000000004   /77804   ",
@@ -52,9 +56,6 @@ public class GameBoard {
     };
 
     String[] objectMaps = {
-            "AAAAAAAAA                               ",
-            "AAAAAAAAAAAAA                           ",
-            "AAAAAAAAAAA                             ",
             "                                        ",
             "                                        ",
             "                                        ",
@@ -67,6 +68,9 @@ public class GameBoard {
             "                                        ",
             "                                        ",
             "                                        ",
+            "                   11                   ",
+            "                                        ",
+            "                  1111111111            ",
             "                                        ",
             "                                        ",
             "                                        ",
@@ -74,7 +78,7 @@ public class GameBoard {
             "                                        ",
             "                                        ",
             "                                        ",
-            "                                        ",
+            "               bb                       ",
             "                                        ",
             "                                        ",
             "                                        ",
@@ -110,18 +114,23 @@ public class GameBoard {
         groundPosByType.put('U', new Vector2(2, 6));
     }
 
-    private static final HashMap<Character, Vector2> objectPosByType = new HashMap<>();
+    private static final HashMap<Character, Character> objectPosByType = new HashMap<>();
 
     static {
-        objectPosByType.put('A', new Vector2(0, 0));
+        objectPosByType.put('1', 'A');
+        objectPosByType.put('b', 'B');
     }
 
     public void create() {
         txGround = new Texture("game-assets/tilesets/GroundTiles/NewTiles/DarkerGrassHillTiles.png");
-        txObject = new Texture("game-assets/objects/TreeAnimations/TreeSptites.png");
+        //txObject = new Texture("game-assets/objects/TreeAnimations/TreeSptites.png");
         txGrounds = TextureRegion.split(txGround, GROUND_TILE_WIDTH, GROUND_TILE_HEIGHT);
-        txObjects = TextureRegion.split(txObject, OBJECT_TILE_WIDTH, OBJECT_TILE_HEIGHT);
+        //txObjects = TextureRegion.split(txObject, OBJECT_TILE_WIDTH, OBJECT_TILE_HEIGHT);
+
+        entityFactory = new EntityFactory();
+
         gameboard = createTilesArray();
+
     }
 
     public void update () {
@@ -138,7 +147,7 @@ public class GameBoard {
         }
     }
 
-    public Tile[][] createTilesArray() {
+    public Tile[][] createTilesArray(){
         Tile[][] tilesArray = new Tile[groundMaps[0].length()][groundMaps.length];
 
         for (int i = 0; i < groundMaps.length; i++) {
@@ -146,12 +155,21 @@ public class GameBoard {
                 Vector2 positionGroundTexture = groundPosByType.get(groundMaps[i].charAt(j));
                 TextureRegion groundTexture = txGrounds[(int) positionGroundTexture.x][(int) positionGroundTexture.y];
 
-                Vector2 positionObjectTexture = objectPosByType.get(objectMaps[i].charAt(j));
+                //Vector2 positionObjectTexture = objectPosByType.get(objectMaps[i].charAt(j));
+                //TextureRegion objectTexture;
+                //if (positionObjectTexture == null){
+                //    objectTexture= null;
+                //}else {
+                //    objectTexture = txObjects[(int) positionObjectTexture.x][(int) positionObjectTexture.y];
+                //}
+                //;
+
                 TextureRegion objectTexture;
-                if (positionObjectTexture == null){
-                    objectTexture= null;
+                if (objectPosByType.get(objectMaps[i].charAt(j)) != null){
+                    Entity entity = entityFactory.getEntity(objectPosByType.get(objectMaps[i].charAt(j)));
+                    objectTexture = entity.getTexture(objectMaps[i].charAt(j));
                 }else {
-                    objectTexture = txObjects[(int) positionObjectTexture.x][(int) positionObjectTexture.y];
+                    objectTexture = null;
                 }
                 tilesArray[j][Math.abs(i-groundMaps.length+1)] = new Tile(groundTexture,objectTexture);
             }
