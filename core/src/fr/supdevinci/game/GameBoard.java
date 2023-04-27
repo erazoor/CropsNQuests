@@ -1,14 +1,15 @@
 package fr.supdevinci.game;
 
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.math.Vector2;
+import fr.supdevinci.game.Entity.Entity;
+import fr.supdevinci.game.Entity.ObjectFactory;
+import fr.supdevinci.game.Entity.Ground;
 
 import java.util.HashMap;
 
 public class GameBoard {
-    EntityFactory entityFactory;
+    ObjectFactory entityFactory;
 
     String[] groundMaps = {
             "                                50004   ",
@@ -44,6 +45,13 @@ public class GameBoard {
     };
 
     String[] objectMaps = {
+            "111111111                               ",
+            "11111                                   ",
+            "111111                                  ",
+            "111111111                               ",
+            "111111111                               ",
+            "11111111                                ",
+            "111111111       b                       ",
             "                                        ",
             "                                        ",
             "                                        ",
@@ -54,23 +62,16 @@ public class GameBoard {
             "                                        ",
             "                                        ",
             "                                        ",
-            "                b                       ",
-            "                                        ",
-            "                   11                   ",
-            "                                        ",
-            "                  1111111111            ",
             "                                        ",
             "                                        ",
             "                                        ",
             "                                        ",
-            "                                        ",
-            "                                        ",
-            "                                        ",
-            "               b                        ",
+            "         b                              ",
             "                                        ",
             "                                        ",
             "                                        ",
             "                                        ",
+            "                                 b      ",
             "                                        ",
             "                                        ",
             "                                        ",
@@ -85,9 +86,9 @@ public class GameBoard {
         objectPosByType.put('b', 'B');
     }
 
-    private ObjectV2 ground;
+    private Ground ground;
     public void create() {
-        entityFactory = new EntityFactory();
+        entityFactory = new ObjectFactory();
         ground = new Ground();
         gameboard = createTilesArray();
     }
@@ -101,7 +102,12 @@ public class GameBoard {
         int boardHeight = gameboard[0].length;
         for (int x = 0; x < boardWidth; x++) {
             for (int y = 0; y < boardHeight; y++) {
-                gameboard[x][y].draw(batch, x, y);
+                gameboard[x][y].drawGround(batch, x, y);
+            }
+        }
+        for (int x = boardWidth -1; x >= 0; x--) {
+            for (int y = boardHeight -1; y >= 0; y--) {
+                gameboard[x][y].drawObject(batch, x, y);
             }
         }
     }
@@ -111,16 +117,13 @@ public class GameBoard {
 
         for (int i = 0; i < groundMaps.length; i++) {
             for (int j = 0; j < groundMaps[i].length(); j++) {
-                TextureRegion groundTexture = ground.getTexture(groundMaps[i].charAt(j));
-
-                TextureRegion objectTexture;
+                Entity object;
                 if (objectPosByType.get(objectMaps[i].charAt(j)) != null){
-                    ObjectV2 entity = entityFactory.getEntity(objectPosByType.get(objectMaps[i].charAt(j)));
-                    objectTexture = entity.getTexture(objectMaps[i].charAt(j));
+                    object = entityFactory.getEntity(objectPosByType.get(objectMaps[i].charAt(j)));
                 }else {
-                    objectTexture = null;
+                    object = null;
                 }
-                tilesArray[j][Math.abs(i-groundMaps.length+1)] = new Tile(groundTexture,objectTexture);
+                tilesArray[j][Math.abs(i-groundMaps.length+1)] = new Tile(ground,object, groundMaps[i].charAt(j));
             }
         }
 
