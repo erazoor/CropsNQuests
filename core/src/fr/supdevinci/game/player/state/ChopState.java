@@ -7,25 +7,27 @@ import fr.supdevinci.game.player.PlayerTextureMap;
 import fr.supdevinci.game.player.handler.StateHandler;
 
 public class ChopState implements StateHandler {
+    private int direction;
+    private float chopTime;
+    private static final float CHOP_DURATION = 1.0f;
 
     public ChopState() { }
 
     @Override
     public void update(Player player, float delta) {
-        // Noting to do here
+        chopTime += delta;
+        if (chopTime >= CHOP_DURATION) {
+            player.changeState(Player.STATE_IDLE);
+        }
     }
 
     @Override
     public void processInputs(Player player) {
-        if(Gdx.input.isKeyPressed(Input.Keys.E))
-            return;
+        // Nothing to do here
     }
 
     @Override
     public Object getTexture(Player player, PlayerTextureMap textureMap) {
-        int direction = player.chopToDirection();
-
-        player.setChopDirection(direction);
-        return textureMap.getChopTexture(direction);
+        return textureMap.getChopTexture(player.getPlayerDirection());
     }
 }

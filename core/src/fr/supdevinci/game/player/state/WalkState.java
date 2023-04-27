@@ -20,7 +20,7 @@ public class WalkState implements StateHandler {
 
     @Override
     public void processInputs(Player player) {
-        // Noting to do here
+        // Nothing to do here
     }
 
     @Override

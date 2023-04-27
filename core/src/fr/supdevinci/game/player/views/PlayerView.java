@@ -80,6 +80,6 @@ public class PlayerView implements Drawable, PlayerTextureMap {
 
     @Override
     public Object getChopTexture(int direction) {
-        return animations.get(ANIMATIONS[direction] + 12).getKeyFrame(this.time, true);
+        return animations.get(ANIMATIONS[direction] + 16).getKeyFrame(this.time, true);
     }
 }

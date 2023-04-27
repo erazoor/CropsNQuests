@@ -4,6 +4,7 @@ import com.badlogic.gdx.math.Vector2;
 import fr.supdevinci.game.player.handler.StateHandler;
 import fr.supdevinci.game.player.state.IdleState;
 import fr.supdevinci.game.player.state.WalkState;
+import fr.supdevinci.game.player.state.ChopState;
 import fr.supdevinci.game.player.utils.Direction;
 
 public class Player {
@@ -23,7 +24,8 @@ public class Player {
         // this.map = map;
         this.states = new StateHandler[]{
                 new IdleState(),
-                new WalkState(SPEED)
+                new WalkState(SPEED),
+                new ChopState()
         };
         reset();
     }
@@ -56,6 +58,10 @@ public class Player {
         currentState.processInputs(this);
     }
 
+    public Object getTexture(PlayerTextureMap textureMap) {
+        return currentState.getTexture(this, textureMap);
+    }
+
     public int getIdleDirection() {
         return this.idleDirection;
     }
@@ -65,10 +71,6 @@ public class Player {
             throw new IllegalArgumentException("Valid directions are 0, 1, 2, 3");
         }
         this.idleDirection = direction;
-    }
-
-    public Object getTexture(PlayerTextureMap textureMap) {
-        return currentState.getTexture(this, textureMap);
     }
 
     public boolean isDestinationReached() {
@@ -94,11 +96,25 @@ public class Player {
         }
     }
 
-    public int chopToDirection() {
-        return 0;
+    public void tryToChop(Boolean bool) {
+        if (bool) {
+            changeState(Player.STATE_CHOPPING);
+        }
     }
 
-    public void setChopDirection(int direction) {
-        // TODO
+    public int getPlayerDirection() {
+        if (actual.x < destination.x) {
+            return Direction.RIGHT;
+        }
+        if (actual.x > destination.x) {
+            return Direction.LEFT;
+        }
+        if (actual.y < destination.y) {
+            return Direction.UP;
+        }
+        if (actual.y > destination.y) {
+            return Direction.DOWN;
+        }
+        return idleDirection;
     }
 }

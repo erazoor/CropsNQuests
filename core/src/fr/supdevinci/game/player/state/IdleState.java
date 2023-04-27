@@ -21,12 +21,22 @@ public class IdleState implements StateHandler {
         int directionX = 0;
         int directionY = 0;
 
-        if(Gdx.input.isKeyPressed(Input.Keys.LEFT) || Gdx.input.isKeyPressed(Input.Keys.RIGHT))
-            directionX = Gdx.input.isKeyPressed(Input.Keys.LEFT) ? -1:1;
-        else if(Gdx.input.isKeyPressed(Input.Keys.DOWN)||Gdx.input.isKeyPressed(Input.Keys.UP))
+        boolean isChopping = false;
+        boolean isMoving = false;
+
+        if(Gdx.input.isKeyPressed(Input.Keys.LEFT) || Gdx.input.isKeyPressed(Input.Keys.RIGHT)){
+            isMoving = true;
+            directionX = Gdx.input.isKeyPressed(Input.Keys.LEFT) ? -1: 1;
+        } else if(Gdx.input.isKeyPressed(Input.Keys.DOWN)||Gdx.input.isKeyPressed(Input.Keys.UP)){
+            isMoving = true;
             directionY = Gdx.input.isKeyPressed(Input.Keys.DOWN) ? -1:1;
+        }
 
         player.tryToMoveToDestination(directionX, directionY);
+
+        isChopping = Gdx.input.isKeyPressed(Input.Keys.SPACE) && !isMoving;
+
+        player.tryToChop(isChopping);
     }
 
     @Override
