@@ -94,7 +94,11 @@ public class Player {
         }
     }
 
-    public void chopToDirection(int directionX, int directionY) {
-        return Direction.face(this.actual, this.destination);
+    public int chopToDirection() {
+        return 0;
+    }
+
+    public void setChopDirection(int direction) {
+        // TODO
     }
 }

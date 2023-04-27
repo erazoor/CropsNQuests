@@ -14,14 +14,14 @@ public class Direction {
         int direction = NONE;
 
         if(to.x<from.x) { direction = LEFT ; from.x=Math.max(to.x, from.x-delta.x); }
-        if(to.x>from.x) { direction = RIGHT; from.x=Math.min(to.x, from.x+delta.x); }
-        if(to.y<from.y) { direction = DOWN ; from.y=Math.max(to.y, from.y-delta.y); }
-        if(to.y>from.y) { direction = UP   ; from.y=Math.min(to.y, from.y+delta.y); }
+        else if(to.x>from.x) { direction = RIGHT; from.x=Math.min(to.x, from.x+delta.x); }
+        else if(to.y<from.y) { direction = DOWN ; from.y=Math.max(to.y, from.y-delta.y); }
+        else { direction = UP   ; from.y=Math.min(to.y, from.y+delta.y); }
 
         return direction;
     }
 
     public static int face() {
-        // TODO
+        return NONE;
     }
 }

@@ -8,11 +8,15 @@ import com.badlogic.gdx.math.Vector2;
 
 import fr.supdevinci.game.player.Player;
 import fr.supdevinci.game.player.PlayerTextureMap;
-import fr.supdevinci.game.player.utils.Direction;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class PlayerView implements Drawable, PlayerTextureMap {
-    public final static int WIDTH = 48;
-    public final static int HEIGHT = 48;
+
+    private final static int ANIMATIONS_NUMBER = 24;
+    private final static int WIDTH = 48;
+    private final static int HEIGHT = 48;
 
     private final static int ANIM_LEFT = 2;
     private final static int ANIM_RIGHT = 3;
@@ -26,8 +30,7 @@ public class PlayerView implements Drawable, PlayerTextureMap {
     private float time = .0f;
 
     private Texture texture;
-    private TextureRegion[][] textureTiles;
-    private Animation<TextureRegion>[] animations;
+    private final List<Animation<TextureRegion>> animations = new ArrayList<>();
 
     private final Player player;
 
@@ -37,16 +40,11 @@ public class PlayerView implements Drawable, PlayerTextureMap {
 
     @Override
     public void create() {
-        //texture = new Texture("character.png");
         texture = new Texture("game-assets/characters/PremiumCharakterSpritesheet.png");
-        textureTiles = TextureRegion.split(texture, WIDTH, HEIGHT);
-        animations = new Animation[Direction.DIRECTIONS];
+        TextureRegion[][] textureTiles = TextureRegion.split(texture, WIDTH, HEIGHT);
 
-        for(int i = 0; i < animations.length; i++) {
-            animations[i] = new Animation<>(
-                    ANIM_SPEED,
-                    textureTiles[i]
-            );
+        for(int i = 0; i < ANIMATIONS_NUMBER; i++) {
+            animations.add(new Animation<>(ANIM_SPEED, textureTiles[i]));
         }
     }
 
@@ -55,12 +53,12 @@ public class PlayerView implements Drawable, PlayerTextureMap {
         time += delta;
         player.updateAndProcessInputs(delta);
 
-        Vector2 posititon = player.getPosition();
+        Vector2 position = player.getPosition();
 
         batch.draw(
                 (TextureRegion)player.getTexture(this),
-                10 * .5f * (posititon.x+.25f) - (float) PlayerView.WIDTH / 2,
-                10 * .5f * posititon.y
+                10 * .5f * (position.x+.25f) - (float) PlayerView.WIDTH / 2,
+                10 * .5f * position.y
         );
     }
 
@@ -70,12 +68,17 @@ public class PlayerView implements Drawable, PlayerTextureMap {
     }
 
     @Override
-    public Object getWalkTexture(int direction) {
-        return animations[ANIMS[direction]].getKeyFrame(this.time, true);
+    public Object getIdleTexture(int direction) {
+        return animations.get(ANIMS[direction]).getKeyFrame(this.time, true);
     }
 
     @Override
-    public Object getIdleTexture(int direction) {
-        return textureTiles[ANIMS[direction]][1];
+    public Object getWalkTexture(int direction) {
+        return animations.get(ANIMS[direction] + 4).getKeyFrame(this.time, true);
+    }
+
+    @Override
+    public Object getChopTexture(int direction) {
+        return animations.get(ANIMS[direction] + 12).getKeyFrame(this.time, true);
     }
 }
