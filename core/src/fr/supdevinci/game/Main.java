@@ -22,7 +22,7 @@ public class Main extends ApplicationAdapter {
 
 	@Override
 	public void render () {
-		ScreenUtils.clear(1, 0, 0, 1);
+		ScreenUtils.clear(0, 20, 100, 1);
 
 		batch.begin();
 		gameBoard.draw(batch);

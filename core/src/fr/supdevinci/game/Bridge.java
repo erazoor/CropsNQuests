@@ -7,7 +7,7 @@ import com.badlogic.gdx.math.Vector2;
 import java.util.HashMap;
 
 public class Bridge implements Entity{
-    private final static int TX_TILE_HEIGHT = 48;
+    private final static int TX_TILE_HEIGHT = 30;
     private final static int TX_TILE_WIDTH = 15;
 
     private Texture tx;
