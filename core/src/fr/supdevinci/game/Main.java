@@ -8,24 +8,29 @@ import com.badlogic.gdx.utils.ScreenUtils;
 public class Main extends ApplicationAdapter {
 	SpriteBatch batch;
 	Texture img;
-	
+	GameBoard gameBoard;
+	private Texture txGround ;
+
+
 	@Override
 	public void create () {
 		batch = new SpriteBatch();
-		img = new Texture("badlogic.jpg");
+		txGround = new Texture("game-assets/tilesets/GroundTiles/NewTiles/DarkerGrassHillTiles.png");
+		gameBoard = new GameBoard();
+		gameBoard.create();
 	}
 
 	@Override
 	public void render () {
-		ScreenUtils.clear(1, 0, 0, 1);
+		ScreenUtils.clear(0, 20, 100, 1);
+
 		batch.begin();
-		batch.draw(img, 0, 0);
+		gameBoard.draw(batch);
 		batch.end();
 	}
 	
 	@Override
 	public void dispose () {
 		batch.dispose();
-		img.dispose();
 	}
 }
