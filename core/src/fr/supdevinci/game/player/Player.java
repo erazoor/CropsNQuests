@@ -1,79 +1,92 @@
 package fr.supdevinci.game.player;
 
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.Vector2;
+import fr.supdevinci.game.player.handler.StateHandler;
+import fr.supdevinci.game.player.state.IdleState;
+import fr.supdevinci.game.player.state.WalkState;
+import fr.supdevinci.game.player.utils.Direction;
 
 public class Player {
-    private float width;
-    private float height;
-    private PlayerAnimation playerAnimation;
-    private PlayerMovement playerMovement;
+    public final static int STATE_IDLE = 0;
+    public final static int STATE_MOVING = 1;
+    private final static float SPEED = 4f;
+    private Vector2 actual, destination;
+    private int idleDirection;
+    // private final Map map;
 
-    public Player(TextureRegion spritesheet) {
-        playerAnimation = new PlayerAnimation(spritesheet);
-        playerMovement = new PlayerMovement(playerAnimation);
+    private final StateHandler[] states;
+    private StateHandler currentState;
+
+    public Player(/* Map map */) {
+        // this.map = map;
+        this.states = new StateHandler[]{
+                new IdleState(),
+                new WalkState(SPEED)
+        };
+        reset();
     }
 
-    public void render(SpriteBatch batch) {
-        batch.draw(getCurrentFrame(), playerMovement.getX(), playerMovement.getY(), width, height);
+    public Vector2 getPosition() {
+        return actual;
     }
 
-    private TextureRegion getCurrentFrame() {
-        switch (playerAnimation.getAction()) {
-            case IDLE:
-                return playerAnimation.getIdleRegion();
-            case WALK:
-                return playerAnimation.getWalkRegion();
-            case RUN:
-                return playerAnimation.getRunRegion();
-            case ATTACK:
-                return playerAnimation.getAttackRegion();
-            case WATER:
-                return playerAnimation.getWaterRegion();
-            case CHOP:
-                return playerAnimation.getChopRegion();
-        }
+    public Boolean isOnBorder() { /* TODO with map */
         return null;
     }
 
-    public void update(float delta) {
-        playerAnimation.update(delta);
+    public Boolean isOnWater() { /* TODO with map */
+        return null;
     }
 
-    public void setDirection(PlayerAnimation.Direction direction) {
-        playerAnimation.setDirection(direction);
+    public void changeState(int newState) {
+        currentState = states[newState];
     }
 
-    public void setAction(PlayerAnimation.Action action) {
-        playerAnimation.setAction(action);
+    public void reset() {
+        this.idleDirection = Direction.DOWN;
+        this.actual = new Vector2(0, 0);
+        this.destination = this.actual.cpy();
+        changeState(STATE_IDLE);
     }
 
-    public void setPosition(float x, float y) {
-        playerMovement.setPosition(x, y);
+    public void updateAndProcessInputs(float delta) {
+        currentState.update(this, delta);
+        currentState.processInputs(this);
     }
 
-    public void setSize(float width, float height) {
-        this.width = width;
-        this.height = height;
+    public int getIdleDirection() {
+        return this.idleDirection;
     }
 
-    public void moveUp() {
-        playerMovement.moveUp();
+    public void setIdleDirection(int direction) {
+        if(direction < 0 || Direction.DIRECTIONS <= direction ) {
+            throw new IllegalArgumentException("Valid directions are 0, 1, 2, 3");
+        }
+        idleDirection = direction;
     }
 
-    public void moveRight() {
-        playerMovement.moveRight();
+    public Object getTexture(PlayerTextureMap textureMap) {
+        return currentState.getTexture(this, textureMap);
     }
 
-    public void moveDown() {
-        playerMovement.moveDown();
+    public boolean isDestinationReached() {
+        return actual.equals(destination);
     }
 
-    public void moveLeft() {
-        playerMovement.moveLeft();
+    public int walkToDirection(float step) {
+        return Direction.move(actual, destination, new Vector2(step, step));
     }
 
-    public void dispose() {
+    public void tryToMoveToDestination(int directionX, int directionY) {
+        assert (((directionX == 0) || (directionY == 0)) && (directionX >= -1) && (directionX <= 1) && (directionY >= -1) && (directionY <= 1));
+        if (directionX != 0 || directionY != 0) {
+            int destX = (int) actual.x + directionX;
+            int destY = (int) actual.y + directionY;
 
+            /*if(!map.isWall(destX, destY)) {
+                this.destination.set(destX, destY);
+                changeState(Character.STATE_MOVING);
+            }*/
+        }
     }
 }
