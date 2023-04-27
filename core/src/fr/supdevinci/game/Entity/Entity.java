@@ -9,29 +9,14 @@ import java.util.HashMap;
 public abstract class Entity {
     public int height = 16;
     public int width = 16;
-    //public Texture tx;
     public TextureRegion[][] txRegions;
     public TextureRegion txRegion;
     public HashMap<Character, Vector2> posByType = new HashMap<>();
 
     public abstract void makeMove();
 
-    /*public TextureRegion getTexture(char c) {
-        return getTextureByPosition(posByType.get(c));
-    }*/
-
     public TextureRegion getTexture() {
         return txRegion;
     }
-
-   /* private TextureRegion getTextureByPosition(Vector2 position) {
-        TextureRegion objectTexture;
-        if (position == null){
-            objectTexture= null;
-        }else {
-            objectTexture = txRegions[(int) position.x][(int) position.y];
-        }
-        return objectTexture;
-    }*/
 
 }

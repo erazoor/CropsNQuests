@@ -93,10 +93,6 @@ public class GameBoard {
         gameboard = createTilesArray();
     }
 
-    public void update () {
-
-    }
-
     public void draw (SpriteBatch batch) {
         int boardWidth = gameboard.length;
         int boardHeight = gameboard[0].length;
