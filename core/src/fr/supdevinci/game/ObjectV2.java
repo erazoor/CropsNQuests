@@ -7,25 +7,23 @@ import com.badlogic.gdx.math.Vector2;
 import java.util.HashMap;
 
 public abstract class ObjectV2 {
-    private int txTitleHeight;
-    private int txTitleWidth;
 
-    private Texture tx;
+    public Texture tx;
 
-    private TextureRegion[][] txRegions;
+    public TextureRegion[][] txRegions;
 
-    private static final HashMap<Character, Vector2> objectPosByType = new HashMap<>();
+    public int height = 16;
 
-    public void create() {
+    public int width = 16;
 
-    }
+    public HashMap<Character, Vector2> posByType = new HashMap<>();
 
-    public void makeMove() {
-
-    }
+    public abstract void makeMove();
 
     public TextureRegion getTexture(char c) {
-        return getTextureByPosition(objectPosByType.get(c));
+        System.out.println("object v2 test : " + txRegions.length);
+        System.out.println("x " + posByType.get(c).x + "y : " + posByType.get(c).y);
+        return getTextureByPosition(posByType.get(c));
     }
 
     private TextureRegion getTextureByPosition(Vector2 position) {
@@ -37,4 +35,5 @@ public abstract class ObjectV2 {
         }
         return objectTexture;
     }
+
 }

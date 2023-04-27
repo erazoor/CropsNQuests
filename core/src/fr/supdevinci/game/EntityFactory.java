@@ -5,17 +5,15 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import java.nio.charset.CharacterCodingException;
 
 public class EntityFactory {
-    private Entity tree;
-    private Entity bridge;
+    private ObjectV2 tree;
+    private ObjectV2 bridge;
 
     public EntityFactory() {
             tree = new Tree();
-            tree.create();
             bridge = new Bridge();
-            bridge.create();
     }
 
-    public Entity getEntity(char c) {
+    public ObjectV2 getEntity(char c) {
         switch (c) {
             case 'A':
                 return tree;

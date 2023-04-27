@@ -8,20 +8,8 @@ import com.badlogic.gdx.math.Vector2;
 import java.util.HashMap;
 
 public class GameBoard {
-
-    private final static int GROUND_TILE_WIDTH = 16;
-    private final static int GROUND_TILE_HEIGHT = 16;
-    private final static int OBJECT_TILE_HEIGHT = 50;
-    private final static int OBJECT_TILE_WIDTH = 40;
-    private Texture txGround;
-    //private Texture txObject;
-    private TextureRegion[][] txGrounds;
-
     EntityFactory entityFactory;
 
-    //private Entity entity;
-
-    //private TextureRegion[][] txObjects;
     String[] groundMaps = {
             "                                50004   ",
             "                                u3004   ",
@@ -66,7 +54,7 @@ public class GameBoard {
             "                                        ",
             "                                        ",
             "                                        ",
-            "                                        ",
+            "                b                       ",
             "                                        ",
             "                   11                   ",
             "                                        ",
@@ -89,30 +77,6 @@ public class GameBoard {
     };
 
     Tile[][] gameboard;
-    private static final HashMap<Character, Vector2> groundPosByType = new HashMap<>();
-
-    static {
-        groundPosByType.put(' ', new Vector2(1, 1));
-        groundPosByType.put('0', new Vector2(6,10));
-        groundPosByType.put('1', new Vector2(0, 0));
-        groundPosByType.put('2', new Vector2(0, 1));
-        groundPosByType.put('3', new Vector2(0, 2));
-        groundPosByType.put('4', new Vector2(1, 0));
-        groundPosByType.put('5', new Vector2(1, 2));
-        groundPosByType.put('6', new Vector2(2, 0));
-        groundPosByType.put('7', new Vector2(2, 1));
-        groundPosByType.put('8', new Vector2(2, 2));
-        groundPosByType.put('F', new Vector2(5, 5));
-        groundPosByType.put('f', new Vector2(6, 5));
-        groundPosByType.put('R', new Vector2(5, 3));
-        groundPosByType.put('r', new Vector2(6, 3));
-        groundPosByType.put('G', new Vector2(5, 0));
-        groundPosByType.put('g', new Vector2(6, 0));
-        groundPosByType.put('/', new Vector2(1, 5));
-        groundPosByType.put('|', new Vector2(1, 6));
-        groundPosByType.put('u', new Vector2(2, 5));
-        groundPosByType.put('U', new Vector2(2, 6));
-    }
 
     private static final HashMap<Character, Character> objectPosByType = new HashMap<>();
 
@@ -121,16 +85,11 @@ public class GameBoard {
         objectPosByType.put('b', 'B');
     }
 
+    private ObjectV2 ground;
     public void create() {
-        txGround = new Texture("game-assets/tilesets/GroundTiles/NewTiles/DarkerGrassHillTiles.png");
-        //txObject = new Texture("game-assets/objects/TreeAnimations/TreeSptites.png");
-        txGrounds = TextureRegion.split(txGround, GROUND_TILE_WIDTH, GROUND_TILE_HEIGHT);
-        //txObjects = TextureRegion.split(txObject, OBJECT_TILE_WIDTH, OBJECT_TILE_HEIGHT);
-
         entityFactory = new EntityFactory();
-
+        ground = new Ground();
         gameboard = createTilesArray();
-
     }
 
     public void update () {
@@ -152,21 +111,11 @@ public class GameBoard {
 
         for (int i = 0; i < groundMaps.length; i++) {
             for (int j = 0; j < groundMaps[i].length(); j++) {
-                Vector2 positionGroundTexture = groundPosByType.get(groundMaps[i].charAt(j));
-                TextureRegion groundTexture = txGrounds[(int) positionGroundTexture.x][(int) positionGroundTexture.y];
-
-                //Vector2 positionObjectTexture = objectPosByType.get(objectMaps[i].charAt(j));
-                //TextureRegion objectTexture;
-                //if (positionObjectTexture == null){
-                //    objectTexture= null;
-                //}else {
-                //    objectTexture = txObjects[(int) positionObjectTexture.x][(int) positionObjectTexture.y];
-                //}
-                //;
+                TextureRegion groundTexture = ground.getTexture(groundMaps[i].charAt(j));
 
                 TextureRegion objectTexture;
                 if (objectPosByType.get(objectMaps[i].charAt(j)) != null){
-                    Entity entity = entityFactory.getEntity(objectPosByType.get(objectMaps[i].charAt(j)));
+                    ObjectV2 entity = entityFactory.getEntity(objectPosByType.get(objectMaps[i].charAt(j)));
                     objectTexture = entity.getTexture(objectMaps[i].charAt(j));
                 }else {
                     objectTexture = null;
