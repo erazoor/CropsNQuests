@@ -25,17 +25,18 @@ public class PlayerView implements Drawable, PlayerTextureMap {
 
     private final static float ANIM_SPEED = 0.1f;
 
-    private final static int[] ANIMS = { ANIM_LEFT, ANIM_RIGHT, ANIM_DOWN, ANIM_UP };
+    private final int[] ANIMATIONS = { ANIM_LEFT, ANIM_RIGHT, ANIM_DOWN, ANIM_UP };
 
     private float time = .0f;
 
     private Texture texture;
-    private final List<Animation<TextureRegion>> animations = new ArrayList<>();
+    private final List<Animation<TextureRegion>> animations;
 
     private final Player player;
 
     public PlayerView(Player player) {
         this.player = player;
+        this.animations = new ArrayList<>();
     }
 
     @Override
@@ -69,16 +70,16 @@ public class PlayerView implements Drawable, PlayerTextureMap {
 
     @Override
     public Object getIdleTexture(int direction) {
-        return animations.get(ANIMS[direction]).getKeyFrame(this.time, true);
+        return animations.get(ANIMATIONS[direction]).getKeyFrame(this.time, true);
     }
 
     @Override
     public Object getWalkTexture(int direction) {
-        return animations.get(ANIMS[direction] + 4).getKeyFrame(this.time, true);
+        return animations.get(ANIMATIONS[direction] + 4).getKeyFrame(this.time, true);
     }
 
     @Override
     public Object getChopTexture(int direction) {
-        return animations.get(ANIMS[direction] + 12).getKeyFrame(this.time, true);
+        return animations.get(ANIMATIONS[direction] + 12).getKeyFrame(this.time, true);
     }
 }
