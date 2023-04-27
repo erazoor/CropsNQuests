@@ -1,20 +1,21 @@
-package fr.supdevinci.game;
+package fr.supdevinci.game.Entity;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.math.Vector2;
 
-import java.util.HashMap;
-
-public class Bridge extends ObjectV2 {
+public class Bridge extends Entity {
     private final static int TX_TILE_HEIGHT = 48;
     private final static int TX_TILE_WIDTH = 15;
 
+    private final static int BRIDGE_HEIGHT = 32;
+    private final static int BRIDGE_WIDTH = 16;
 
     public Bridge() {
-        tx = new Texture("game-assets/tilesets/BuildingParts/WoodBridgeV2.png");
+        Texture tx = new Texture("game-assets/tilesets/BuildingParts/WoodBridgeV2.png");
         txRegions = TextureRegion.split(tx, TX_TILE_WIDTH, TX_TILE_HEIGHT);
-        posByType.put('b', new Vector2(0, 0));
+        txRegion = txRegions[0][0];
+        height = BRIDGE_HEIGHT;
+        width = BRIDGE_WIDTH;
     }
 
     @Override

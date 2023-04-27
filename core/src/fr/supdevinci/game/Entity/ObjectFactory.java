@@ -1,19 +1,15 @@
-package fr.supdevinci.game;
+package fr.supdevinci.game.Entity;
 
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
+public class ObjectFactory {
+    private Entity tree;
+    private Entity bridge;
 
-import java.nio.charset.CharacterCodingException;
-
-public class EntityFactory {
-    private ObjectV2 tree;
-    private ObjectV2 bridge;
-
-    public EntityFactory() {
+    public ObjectFactory() {
             tree = new Tree();
             bridge = new Bridge();
     }
 
-    public ObjectV2 getEntity(char c) {
+    public Entity getEntity(char c) {
         switch (c) {
             case 'A':
                 return tree;

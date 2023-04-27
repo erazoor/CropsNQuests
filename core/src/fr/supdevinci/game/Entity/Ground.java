@@ -1,17 +1,17 @@
-package fr.supdevinci.game;
+package fr.supdevinci.game.Entity;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
+import fr.supdevinci.game.Entity.Entity;
 
-public class Ground extends ObjectV2 {
+public class Ground extends Entity {
 
     private final static int GROUND_TILE_WIDTH = 16;
     private final static int GROUND_TILE_HEIGHT = 16;
-    private TextureRegion[][] texture;
 
     public Ground(){
-        tx = new Texture("game-assets/tilesets/GroundTiles/NewTiles/DarkerGrassHillTiles.png");
+        Texture tx = new Texture("game-assets/tilesets/GroundTiles/NewTiles/DarkerGrassHillTiles.png");
         txRegions = TextureRegion.split(tx, GROUND_TILE_WIDTH, GROUND_TILE_HEIGHT);
         posByType.put(' ', new Vector2(1, 1));
         posByType.put('0', new Vector2(6,10));
@@ -33,6 +33,20 @@ public class Ground extends ObjectV2 {
         posByType.put('|', new Vector2(1, 6));
         posByType.put('u', new Vector2(2, 5));
         posByType.put('U', new Vector2(2, 6));
+    }
+
+    public TextureRegion getTexture(char c) {
+        return getTextureByPosition(posByType.get(c));
+    }
+
+    private TextureRegion getTextureByPosition(Vector2 position) {
+        TextureRegion objectTexture;
+        if (position == null){
+            objectTexture= null;
+        }else {
+            objectTexture = txRegions[(int) position.x][(int) position.y];
+        }
+        return objectTexture;
     }
 
     @Override
