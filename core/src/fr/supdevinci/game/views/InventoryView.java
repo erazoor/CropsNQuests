@@ -1,22 +1,26 @@
 package fr.supdevinci.game.views;
 
+import com.badlogic.gdx.Input;
+import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import fr.supdevinci.game.ui.inventory.Inventory;
 
-public class InventoryView implements Drawable {
-    public final static int INVBGXPOS = 370;
-    public final static int INVBGYPOS = 0;
-    public final static int INVBGWIDTH = 270;
-    public final static int INVBGHEIGHT = 320;
-    public int invBoxXPos = 0;
-    public int invBoxYPos = 0;
-    public final static int INVBOXWIDTH = 65;
-    public final static int INVBOXHEIGHT = 65;
+public class InventoryView implements Drawable{
+    public final static int INV_BG_X_POS = 370;
+    public final static int INV_BG_Y_POS = 0;
+    public final static int INV_BG_WIDTH = 270;
+    public final static int INV_BG_HEIGHT = 320;
+    public final static int INV_BOX_X_POS = 50;
+    public final static int INV_BOX_Y_POS = 50;
+    public final static int INV_BOX_WIDTH = 65;
+    public final static int INV_BOX_HEIGHT = 65;
+    public final static float INV_BOX_OFFSET = 26.6f;
 
     private Texture txInventoryBg, txInventoryBox;
     private TextureRegion inventoryBg, inventoryBox;
+    private boolean inventoryVisible = false;
     private final Inventory inventory;
 
     public InventoryView(Inventory inventory) { this.inventory = inventory; }
@@ -32,15 +36,11 @@ public class InventoryView implements Drawable {
 
     @Override
     public void render(SpriteBatch batch) {
-        batch.draw(inventoryBg, INVBGXPOS, INVBGYPOS, INVBGWIDTH, INVBGHEIGHT);
+        batch.draw(inventoryBg, INV_BG_X_POS, INV_BG_Y_POS, INV_BG_WIDTH, INV_BG_HEIGHT);
         for(int i = 0; i < 4; i++) {
-            batch.draw(inventoryBox, invBoxXPos, invBoxYPos, INVBOXWIDTH, INVBOXHEIGHT);
             for(int j = 0; j < 5; j++) {
-                batch.draw(inventoryBox, invBoxXPos, invBoxYPos, INVBOXWIDTH, INVBOXHEIGHT);
-                invBoxYPos -= 50;
+                batch.draw(inventoryBox, INV_BOX_X_POS * i + INV_BG_X_POS + INV_BOX_OFFSET, INV_BOX_Y_POS * j + INV_BG_Y_POS + INV_BOX_OFFSET, INV_BOX_WIDTH, INV_BOX_HEIGHT);
             }
-            invBoxYPos = 235;
-            invBoxXPos += 50;
         }
     }
 

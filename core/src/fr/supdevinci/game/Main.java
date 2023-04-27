@@ -23,8 +23,8 @@ public class Main extends ApplicationAdapter implements InputProcessor {
 	private BitmapFont font;
 	private final Inventory inventory;
 	private final List<Drawable> drawables;
-	private Texture txInventoryBg, txInventoryBox, txSettingsBg, txResumeBox, txSettingBox, txQuitBox;
-	private TextureRegion inventoryBg, inventoryBox, settingsBg;
+	private Texture txSettingsBg, txResumeBox, txSettingBox, txQuitBox;
+	private TextureRegion settingsBg;
 	private TextureRegion[][] resumeBox, settingBox, quitBox;
 	private boolean inventoryVisible = false;
 	private boolean settingsVisible = false;
@@ -39,19 +39,13 @@ public class Main extends ApplicationAdapter implements InputProcessor {
 	}
 
 	@Override
-	public void create () {
+	public void create() {
 		this.drawables.forEach(Drawable::create);
 		this.batch = new SpriteBatch();
 		this.font = new BitmapFont();
 		Gdx.input.setInputProcessor(this);
 	}
 
-//		txInventoryBg = new Texture(".././assets/game-assets/gui/Setting menu.png");
-//		inventoryBg = new TextureRegion(txInventoryBg, txInventoryBg.getWidth()/2, 0, txInventoryBg.getWidth()/2, txInventoryBg.getHeight());
-//
-//		txInventoryBox = new Texture(".././assets/game-assets/gui/buttons/Square Buttons 26x26.png");
-//		inventoryBox = new TextureRegion(txInventoryBox, txInventoryBox.getWidth()/2, txInventoryBox.getHeight()/4, txInventoryBox.getWidth()/2, txInventoryBox.getHeight()/4);
-//
 //		txSettingsBg = new Texture(".././assets/game-assets/gui/Setting menu.png");
 //		settingsBg = new TextureRegion(txSettingsBg, 0,0, txSettingsBg.getWidth()/2, txSettingsBg.getHeight());
 //
@@ -63,15 +57,11 @@ public class Main extends ApplicationAdapter implements InputProcessor {
 //
 //		txQuitBox = new Texture(".././assets/game-assets/gui/UI Big Play Button.png");
 //		quitBox = TextureRegion.split(txQuitBox, txQuitBox.getWidth()/2, txQuitBox.getHeight()/2);
-//
-//		font = new BitmapFont();
-//		batch = new SpriteBatch();
-//		Gdx.input.setInputProcessor(this);
 //	}
 
 	@Override
 	public boolean keyDown(int keycode) {
-		if (keycode == Input.Keys.I || keycode == Input.Keys.E) {
+		if (keycode == Input.Keys.I) {
 			inventoryVisible = !inventoryVisible;
 			return true;
 		}
@@ -167,28 +157,12 @@ public class Main extends ApplicationAdapter implements InputProcessor {
 	}
 
 	@Override
-	public void render () {
+	public void render() {
 		ScreenUtils.clear(0, 120, 0.7f, 0);
 
 		this.batch.begin();
 		this.drawables.forEach(d -> d.render(batch));
 		this.batch.end();
-//		if(inventoryVisible) {
-//			int xPos = 380;
-//			int yPos = 235;
-//			int width = 65;
-//			int height = 65;
-//			batch.draw(inventoryBg, 355, 10, 270, 320);
-//			for(int i = 0; i < 4; i++) {
-//				batch.draw(inventoryBox, xPos, yPos, width, height);
-//				for(int j = 0; j < 5; j++) {
-//					batch.draw(inventoryBox, xPos, yPos, width, height);
-//					yPos -= 50;
-//				}
-//				yPos = 235;
-//				xPos += 50;
-//			}
-//		}
 //
 //		if(settingsVisible) {
 //			inventoryVisible = false;
@@ -208,11 +182,9 @@ public class Main extends ApplicationAdapter implements InputProcessor {
 	}
 
 	@Override
-	public void dispose () {
+	public void dispose() {
 		this.batch.dispose();
 		this.drawables.forEach(Drawable::dispose);
-//		txInventoryBg.dispose();
-//		txInventoryBox.dispose();
 //		txSettingsBg.dispose();
 //		txResumeBox.dispose();
 	}
