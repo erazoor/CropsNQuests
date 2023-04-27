@@ -11,7 +11,7 @@ public class ObjectFactory {
 
     public Entity getEntity(char c) {
         switch (c) {
-            case 'A':
+            case 'T':
                 return tree;
             case 'B':
                 return bridge;

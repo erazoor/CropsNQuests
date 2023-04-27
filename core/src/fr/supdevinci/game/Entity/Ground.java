@@ -14,7 +14,6 @@ public class Ground extends Entity {
         Texture tx = new Texture("game-assets/tilesets/GroundTiles/NewTiles/DarkerGrassHillTiles.png");
         txRegions = TextureRegion.split(tx, GROUND_TILE_WIDTH, GROUND_TILE_HEIGHT);
         posByType.put(' ', new Vector2(1, 1));
-        posByType.put('0', new Vector2(6,10));
         posByType.put('1', new Vector2(0, 0));
         posByType.put('2', new Vector2(0, 1));
         posByType.put('3', new Vector2(0, 2));

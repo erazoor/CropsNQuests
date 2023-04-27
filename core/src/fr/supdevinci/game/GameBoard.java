@@ -11,6 +11,10 @@ import java.util.HashMap;
 public class GameBoard {
     ObjectFactory entityFactory;
 
+    Tile[][] gameboard;
+
+    private Ground ground;
+
     String[] groundMaps = {
             "                                50004   ",
             "                                u3004   ",
@@ -45,13 +49,13 @@ public class GameBoard {
     };
 
     String[] objectMaps = {
-            "111111111                               ",
-            "11111                                   ",
-            "111111                                  ",
-            "111111111                               ",
-            "111111111                               ",
-            "11111111                                ",
-            "111111111       b                       ",
+            "TTTTTTTTT                               ",
+            "TTTTTTTTTT                              ",
+            "TTTTTT                                  ",
+            "TTTTTTTTT                               ",
+            "TTTTTTTTT                               ",
+            "TTTTTTT          B                      ",
+            "TTTTTT                                  ",
             "                                        ",
             "                                        ",
             "                                        ",
@@ -65,28 +69,18 @@ public class GameBoard {
             "                                        ",
             "                                        ",
             "                                        ",
-            "                                        ",
-            "         b                              ",
-            "                                        ",
+            "         B                              ",
             "                                        ",
             "                                        ",
             "                                        ",
-            "                                 b      ",
             "                                        ",
+            "                                        ",
+            "                                        ",
+            "                                   B    ",
             "                                        ",
             "                                        ",
     };
 
-    Tile[][] gameboard;
-
-    private static final HashMap<Character, Character> objectPosByType = new HashMap<>();
-
-    static {
-        objectPosByType.put('1', 'A');
-        objectPosByType.put('b', 'B');
-    }
-
-    private Ground ground;
     public void create() {
         entityFactory = new ObjectFactory();
         ground = new Ground();
@@ -114,15 +108,10 @@ public class GameBoard {
         for (int i = 0; i < groundMaps.length; i++) {
             for (int j = 0; j < groundMaps[i].length(); j++) {
                 Entity object;
-                if (objectPosByType.get(objectMaps[i].charAt(j)) != null){
-                    object = entityFactory.getEntity(objectPosByType.get(objectMaps[i].charAt(j)));
-                }else {
-                    object = null;
-                }
+                object = entityFactory.getEntity(objectMaps[i].charAt(j));
                 tilesArray[j][Math.abs(i-groundMaps.length+1)] = new Tile(ground,object, groundMaps[i].charAt(j));
             }
         }
-
         return tilesArray;
     }
 }
