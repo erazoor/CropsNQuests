@@ -4,7 +4,7 @@ import com.badlogic.gdx.math.Vector2;
 
 public class Direction {
     public final static int DIRECTIONS = 4;
-    public final static int NONE = 0;
+    public final static int NONE = -1;
     public final static int LEFT = 0;
     public final static int RIGHT = 1;
     public final static int DOWN = 2;
@@ -19,5 +19,9 @@ public class Direction {
         if(to.y>from.y) { direction = UP   ; from.y=Math.min(to.y, from.y+delta.y); }
 
         return direction;
+    }
+
+    public static int face() {
+        // TODO
     }
 }

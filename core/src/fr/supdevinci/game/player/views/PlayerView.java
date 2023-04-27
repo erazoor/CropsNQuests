@@ -11,13 +11,13 @@ import fr.supdevinci.game.player.PlayerTextureMap;
 import fr.supdevinci.game.player.utils.Direction;
 
 public class PlayerView implements Drawable, PlayerTextureMap {
-    public final static int WIDTH = 16;
-    public final static int HEIGHT = 16;
+    public final static int WIDTH = 48;
+    public final static int HEIGHT = 48;
 
-    private final static int ANIM_LEFT = 3;
-    private final static int ANIM_RIGHT = 1;
-    private final static int ANIM_UP = 0;
-    private final static int ANIM_DOWN = 2;
+    private final static int ANIM_LEFT = 2;
+    private final static int ANIM_RIGHT = 3;
+    private final static int ANIM_UP = 1;
+    private final static int ANIM_DOWN = 0;
 
     private final static float ANIM_SPEED = 0.1f;
 
@@ -37,6 +37,7 @@ public class PlayerView implements Drawable, PlayerTextureMap {
 
     @Override
     public void create() {
+        //texture = new Texture("character.png");
         texture = new Texture("game-assets/characters/PremiumCharakterSpritesheet.png");
         textureTiles = TextureRegion.split(texture, WIDTH, HEIGHT);
         animations = new Animation[Direction.DIRECTIONS];
@@ -58,8 +59,8 @@ public class PlayerView implements Drawable, PlayerTextureMap {
 
         batch.draw(
                 (TextureRegion)player.getTexture(this),
-                1 * .5f * (posititon.x+.25f) - (float) PlayerView.WIDTH / 2,
-                1 * .5f * posititon.y
+                10 * .5f * (posititon.x+.25f) - (float) PlayerView.WIDTH / 2,
+                10 * .5f * posititon.y
         );
     }
 
@@ -70,7 +71,7 @@ public class PlayerView implements Drawable, PlayerTextureMap {
 
     @Override
     public Object getWalkTexture(int direction) {
-        return animations[ANIMS[direction]].getKeyFrame(time, true);
+        return animations[ANIMS[direction]].getKeyFrame(this.time, true);
     }
 
     @Override

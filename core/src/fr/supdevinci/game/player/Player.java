@@ -9,6 +9,8 @@ import fr.supdevinci.game.player.utils.Direction;
 public class Player {
     public final static int STATE_IDLE = 0;
     public final static int STATE_MOVING = 1;
+    public final static int STATE_CHOPPING = 2;
+
     private final static float SPEED = 4f;
     private Vector2 actual, destination;
     private int idleDirection;
@@ -44,7 +46,7 @@ public class Player {
 
     public void reset() {
         this.idleDirection = Direction.DOWN;
-        this.actual = new Vector2(0, 0);
+        this.actual = new Vector2(50f, 50f);
         this.destination = this.actual.cpy();
         changeState(STATE_IDLE);
     }
@@ -62,7 +64,7 @@ public class Player {
         if(direction < 0 || Direction.DIRECTIONS <= direction ) {
             throw new IllegalArgumentException("Valid directions are 0, 1, 2, 3");
         }
-        idleDirection = direction;
+        this.idleDirection = direction;
     }
 
     public Object getTexture(PlayerTextureMap textureMap) {
@@ -70,11 +72,11 @@ public class Player {
     }
 
     public boolean isDestinationReached() {
-        return actual.equals(destination);
+        return this.actual.equals(this.destination);
     }
 
     public int walkToDirection(float step) {
-        return Direction.move(actual, destination, new Vector2(step, step));
+        return Direction.move(this.actual, this.destination, new Vector2(step, step));
     }
 
     public void tryToMoveToDestination(int directionX, int directionY) {
@@ -83,10 +85,16 @@ public class Player {
             int destX = (int) actual.x + directionX;
             int destY = (int) actual.y + directionY;
 
+            this.destination.set(destX, destY);
+            changeState(Player.STATE_MOVING);
             /*if(!map.isWall(destX, destY)) {
                 this.destination.set(destX, destY);
-                changeState(Character.STATE_MOVING);
+                changeState(Player.STATE_MOVING);
             }*/
         }
+    }
+
+    public void chopToDirection(int directionX, int directionY) {
+        return Direction.face(this.actual, this.destination);
     }
 }

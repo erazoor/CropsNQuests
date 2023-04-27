@@ -1,6 +1,8 @@
 package fr.supdevinci.game.player;
 
 public interface PlayerTextureMap {
-    Object getIdleTexture(int direction);
     Object getWalkTexture(int direction);
+    Object getIdleTexture(int direction);
+    Object getChopTexture(int direction);
+
 }
