@@ -5,9 +5,9 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
 public class Bridge extends Entity {
     private final static int TX_TILE_HEIGHT = 48;
-    private final static int TX_TILE_WIDTH = 15;
+    private final static int TX_TILE_WIDTH = 16;
 
-    private final static int BRIDGE_HEIGHT = 32;
+    private final static int BRIDGE_HEIGHT = 48;
     private final static int BRIDGE_WIDTH = 16;
 
     public Bridge() {
@@ -22,6 +22,4 @@ public class Bridge extends Entity {
     public void makeMove() {
 
     }
-
-
 }
