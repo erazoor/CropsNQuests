@@ -5,6 +5,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.utils.ScreenUtils;
@@ -13,12 +14,15 @@ public class Main extends ApplicationAdapter implements InputProcessor {
 
 	// Graphical data
 	private SpriteBatch batch;
-	private Texture txInventoryBg, txInventoryBox, txSettingsBg, txSettingsBox, txResumeBox;
-	private TextureRegion inventoryBg, inventoryBox, settingsBg, settingsBox;
-	private TextureRegion[][] resumeBox;
+	private BitmapFont font;
+	private Texture txInventoryBg, txInventoryBox, txSettingsBg, txResumeBox, txSettingBox, txQuitBox;
+	private TextureRegion inventoryBg, inventoryBox, settingsBg;
+	private TextureRegion[][] resumeBox, settingBox, quitBox;
 	private boolean inventoryVisible = false;
 	private boolean settingsVisible = true;
 	private boolean resumeClicked = false;
+	private boolean settingsClicked = false;
+	private boolean quitClicked = false;
 
 	@Override
 	public void create () {
@@ -35,9 +39,13 @@ public class Main extends ApplicationAdapter implements InputProcessor {
 		txResumeBox = new Texture(".././assets/game-assets/gui/UI Big Play Button.png");
 		resumeBox = TextureRegion.split(txResumeBox, txResumeBox.getWidth()/2, txResumeBox.getHeight()/2);
 
-		txSettingsBox = new Texture(".././assets/game-assets/gui/UI Big Play Button.png");
-		settingsBox = new TextureRegion(txSettingsBox, 0,0, txSettingsBox.getWidth()/2, txSettingsBox.getHeight()/2);
+		txSettingBox = new Texture(".././assets/game-assets/gui/UI Big Play Button.png");
+		settingBox = TextureRegion.split(txSettingBox, txSettingBox.getWidth()/2, txSettingBox.getHeight()/2);
 
+		txQuitBox = new Texture(".././assets/game-assets/gui/UI Big Play Button.png");
+		quitBox = TextureRegion.split(txQuitBox, txQuitBox.getWidth()/2, txQuitBox.getHeight()/2);
+
+		font = new BitmapFont();
 		batch = new SpriteBatch();
 		Gdx.input.setInputProcessor(this);
 	}
@@ -73,22 +81,53 @@ public class Main extends ApplicationAdapter implements InputProcessor {
 
 		return screenX >= xPos && screenX <= xPos + width && screenY >= yPos && screenY <= yPos + height;
 	}
+
+	private boolean isSettingsClicked(int screenX, int screenY) {
+		int xPos = 235;
+		int yPos = 230;
+		int width = 178;
+		int height = 50;
+
+		return screenX >= xPos && screenX <= xPos + width && screenY >= yPos && screenY <= yPos + height;
+	}
+
+	private boolean isQuitClicked(int screenX, int screenY) {
+		int xPos = 235;
+		int yPos = 292;
+		int width = 178;
+		int height = 50;
+
+		return screenX >= xPos && screenX <= xPos + width && screenY >= yPos && screenY <= yPos + height;
+	}
+
 	@Override
 	public boolean touchDown(int screenX, int screenY, int pointer, int button) {
 		if(settingsVisible && isResumeClicked(screenX, screenY)) {
 			resumeClicked = true;
+		}
+		if(settingsVisible && isSettingsClicked(screenX, screenY)) {
+			settingsClicked = true;
+		}
+		if(settingsVisible && isQuitClicked(screenX, screenY)) {
+			quitClicked = true;
 		}
 		return false;
 	}
 
 	@Override
 	public boolean touchUp(int screenX, int screenY, int pointer, int button) {
-		if(settingsVisible) {
-			if(resumeClicked && isResumeClicked(screenX, screenY)) {
-				resumeClicked = false;
-				settingsVisible = false;
-				return true;
-			}
+		if(settingsVisible && isResumeClicked(screenX, screenY)) {
+			resumeClicked = false;
+			settingsVisible = false;
+		}
+		if(settingsVisible && isSettingsClicked(screenX, screenY)) {
+			settingsClicked = false;
+			settingsVisible = false;
+		}
+		if(settingsVisible && isQuitClicked(screenX, screenY)) {
+			quitClicked = false;
+			settingsVisible = false;
+			Gdx.app.exit();
 		}
 		return false;
 	}
@@ -131,15 +170,18 @@ public class Main extends ApplicationAdapter implements InputProcessor {
 		}
 
 		if(settingsVisible) {
+			inventoryVisible = false;
 			int xPos = 228;
 			int yPos = 255;
-			batch.draw(settingsBg, (float) (txSettingsBg.getWidth() /1.35), (float) (txSettingsBg.getHeight() /1.5), 270, 320);
+			String settingsText0 = "SETTINGS";
+			String settingsText1 = "QUIT";
+
+			batch.draw(settingsBg, (float) (txSettingsBg.getWidth() / 1.35), (float) (txSettingsBg.getHeight() / 1.5), 270, 320);
 			batch.draw(resumeBox[1][resumeClicked ? 1:0], xPos, yPos, 192, 64);
-			yPos -= 63;
-			for(int i = 0; i < 2 ; i++) {
-				batch.draw(settingsBox, xPos, yPos, txSettingsBox.getWidth(), txSettingsBox.getHeight());
-				yPos -= 63;
-			}
+			batch.draw(settingBox[0][settingsClicked ? 1:0], xPos, yPos - 63, 192, 64);
+			font.draw(batch, settingsText0, xPos + 60, yPos -22);
+			batch.draw(quitBox[0][quitClicked ? 1:0], xPos, yPos - 126, 192, 64);
+			font.draw(batch, settingsText1, xPos + 75, yPos - 85);
 		}
 		batch.end();
 	}
@@ -150,7 +192,6 @@ public class Main extends ApplicationAdapter implements InputProcessor {
 		txInventoryBg.dispose();
 		txInventoryBox.dispose();
 		txSettingsBg.dispose();
-		txSettingsBox.dispose();
 		txResumeBox.dispose();
 	}
 }
