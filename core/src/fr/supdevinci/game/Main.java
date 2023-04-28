@@ -21,9 +21,6 @@ public class Main extends ApplicationAdapter {
 	private final List<Drawable> drawables;
 	private SpriteBatch batch;
 
-	Texture img;
-	private Texture txGround;
-
 	public Main() {
 		this.map = new GameBoard();
 		this.player = new Player(map);
@@ -34,7 +31,6 @@ public class Main extends ApplicationAdapter {
 
 	@Override
 	public void create () {
-		txGround = new Texture("game-assets/tilesets/GroundTiles/NewTiles/DarkerGrassHillTiles.png");
 		map = new GameBoard();
 		map.create();
 

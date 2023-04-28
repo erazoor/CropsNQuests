@@ -13,7 +13,7 @@ public class Player {
     public final static int STATE_MOVING = 1;
     public final static int STATE_CHOPPING = 2;
 
-    private final static float SPEED = 8f;
+    private final static float SPEED = 12f;
     private Vector2 actual, destination;
     private int idleDirection;
     private final GameBoard map;
