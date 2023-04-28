@@ -118,6 +118,7 @@ public class GameBoard {
     }
 
     public boolean isOutOfBound(int x, int y) {
-        return x < 0 || x > 120 || y < 0 || y > 90;
+        System.out.println(y);
+        return x < 0 || x > 126 || y < 0 || y > 88;
     }
 }
