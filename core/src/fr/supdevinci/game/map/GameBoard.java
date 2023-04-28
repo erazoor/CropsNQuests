@@ -87,6 +87,7 @@ public class GameBoard {
     public void draw (SpriteBatch batch) {
         int boardWidth = gameboard.length;
         int boardHeight = gameboard[0].length;
+
         for (int x = 0; x < boardWidth; x++) {
             for (int y = 0; y < boardHeight; y++) {
                 gameboard[x][y].drawGround(batch, x, y);
@@ -113,11 +114,10 @@ public class GameBoard {
     }
 
     public boolean isWater(int x, int y) {
-        try {
-            return gameboard[x][y].getTileType() == '0';
-        } catch (Exception e) {
-            System.out.println("Error: " + e);
-            return false;
-        }
+        return gameboard[(int) (x / 3.2)][(int) (y / 3)].groundType == '0';
+    }
+
+    public boolean isOutOfBound(int x, int y) {
+        return x < 0 || x > 126 || y < 0 || y > 90;
     }
 }

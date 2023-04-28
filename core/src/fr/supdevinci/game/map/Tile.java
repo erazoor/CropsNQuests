@@ -26,11 +26,7 @@ public class Tile {
     }
 
     public void drawObject(SpriteBatch batch, int x, int y) {
-        if(object != null)
-            batch.draw(object.getTexture(), x*WIDTH - (object.width/2) + (WIDTH/2) , y*HEIGHT-(object.height/2) + (HEIGHT/2), object.width, object.height);
-    }
-
-    public char getTileType() {
-        return groundType;
+        if (object != null)
+            batch.draw(object.getTexture(), x * WIDTH - (object.width / 2) + (WIDTH / 2), y * HEIGHT - (object.height / 2) + (HEIGHT / 2), object.width, object.height);
     }
 }

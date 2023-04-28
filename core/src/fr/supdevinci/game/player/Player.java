@@ -33,9 +33,23 @@ public class Player {
     public Vector2 getPosition() {
         return actual;
     }
+    public Vector2 getPreviousPosition() {
+        if (actual == null) {
+            return new Vector2(50f, 50f);
+        }
+        if (actual.x == destination.x) {
+            return new Vector2(actual.x, actual.y - 1);
+        } else {
+            return new Vector2(actual.x - 1, actual.y);
+        }
+    }
 
     public Boolean isOnWater() {
         return map.isWater((int) actual.x, (int) actual.y);
+    }
+
+    public Boolean isOutOfBound() {
+        return map.isOutOfBound((int) actual.x, (int) actual.y);
     }
 
     public void changeState(int newState) {
@@ -44,7 +58,7 @@ public class Player {
 
     public void reset() {
         this.idleDirection = Direction.DOWN;
-        this.actual = new Vector2(50f, 50f);
+        this.actual = new Vector2(getPreviousPosition());
         this.destination = this.actual.cpy();
         changeState(STATE_IDLE);
     }
@@ -83,9 +97,7 @@ public class Player {
             int destX = (int) actual.x + directionX;
             int destY = (int) actual.y + directionY;
 
-            this.destination.set(destX, destY);
-            changeState(Player.STATE_MOVING);
-            if(!map.isWater(destX, destY)) {
+            if(!map.isWater(destX, destY) && !map.isOutOfBound(destX, destY)) {
                 this.destination.set(destX, destY);
                 changeState(Player.STATE_MOVING);
             }

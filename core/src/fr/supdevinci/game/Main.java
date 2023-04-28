@@ -31,7 +31,6 @@ public class Main extends ApplicationAdapter {
 
 	@Override
 	public void create () {
-		map = new GameBoard();
 		map.create();
 
 		this.drawables.forEach(Drawable::create);
@@ -43,6 +42,10 @@ public class Main extends ApplicationAdapter {
 		if(player.isOnWater()) {
 			player.reset();
 		}
+		if(player.isOutOfBound()){
+			player.reset();
+		}
+
 		float delta = Gdx.graphics.getDeltaTime();
 
 		ScreenUtils.clear(0, 20, 100, 1);
