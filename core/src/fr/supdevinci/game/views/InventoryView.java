@@ -19,9 +19,10 @@ public class InventoryView implements Drawable, InputProcessor{
     public final static int INV_BOX_HEIGHT = 65;
     public final static float INV_BOX_OFFSET = 26.6f;
 
-    private Texture txInventoryBg, txInventoryBox;
+    private Texture txInventoryBg, txInventoryBox, txInventoryItems;
     private TextureRegion inventoryBg, inventoryBox;
-    private boolean inventoryVisible = false;
+    private TextureRegion[][] inventoryItems;
+    private static boolean inventoryVisible = false;
     private final Inventory inventory;
 
     public InventoryView(Inventory inventory) { this.inventory = inventory; }
@@ -34,11 +35,15 @@ public class InventoryView implements Drawable, InputProcessor{
         txInventoryBox = new Texture(".././assets/game-assets/gui/buttons/Square Buttons 26x26.png");
         inventoryBox = new TextureRegion(txInventoryBox, txInventoryBox.getWidth()/2, txInventoryBox.getHeight()/4, txInventoryBox.getWidth()/2, txInventoryBox.getHeight()/4);
 
+        txInventoryItems = new Texture(".././assets/game-assets/items/All items.png");
+        inventoryItems = TextureRegion.split(txInventoryItems, txInventoryItems.getWidth()/8, txInventoryItems.getHeight()/15);
+
         Gdx.input.setInputProcessor(this);
     }
 
-    @Override
+   @Override
     public boolean keyDown(int keycode) {
+        System.out.println("keyDown");
         if (keycode == Input.Keys.I) {
             inventoryVisible = !inventoryVisible;
             return true;
@@ -90,6 +95,9 @@ public class InventoryView implements Drawable, InputProcessor{
                     batch.draw(inventoryBox, INV_BOX_X_POS * i + INV_BG_X_POS + INV_BOX_OFFSET, INV_BOX_Y_POS * j + INV_BG_Y_POS + INV_BOX_OFFSET, INV_BOX_WIDTH, INV_BOX_HEIGHT);
                 }
             }
+            batch.draw(inventoryItems[0][2], INV_BOX_X_POS-33 + INV_BG_X_POS + INV_BOX_OFFSET, INV_BOX_Y_POS+168 + INV_BG_Y_POS + INV_BOX_OFFSET, INV_BOX_WIDTH-35, INV_BOX_HEIGHT-35);
+            batch.draw(inventoryItems[0][3], INV_BOX_X_POS+17 + INV_BG_X_POS + INV_BOX_OFFSET, INV_BOX_Y_POS+168 + INV_BG_Y_POS + INV_BOX_OFFSET, INV_BOX_WIDTH-35, INV_BOX_HEIGHT-35);
+            batch.draw(inventoryItems[1][2], INV_BOX_X_POS+68 + INV_BG_X_POS + INV_BOX_OFFSET, INV_BOX_Y_POS+170 + INV_BG_Y_POS + INV_BOX_OFFSET, INV_BOX_WIDTH-35, INV_BOX_HEIGHT-35);
         }
     }
 

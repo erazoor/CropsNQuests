@@ -12,7 +12,7 @@ import fr.supdevinci.game.views.SettingsView;
 import java.util.ArrayList;
 import java.util.List;
 
-	public class Main extends ApplicationAdapter{
+public class Main extends ApplicationAdapter{
 
 	// Graphical data
 	private SpriteBatch batch;
@@ -31,6 +31,7 @@ import java.util.List;
 	@Override
 	public void create() {
 		this.drawables.forEach(Drawable::create);
+		System.out.println("size : " + drawables.size());
 		this.batch = new SpriteBatch();
 	}
 

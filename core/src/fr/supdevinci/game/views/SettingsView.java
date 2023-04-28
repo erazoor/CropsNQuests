@@ -21,7 +21,7 @@ public class SettingsView implements Drawable, InputProcessor {
     private Texture txSettingsBg, txResumeBox, txSettingBox, txQuitBox;
     private TextureRegion settingsBg;
     private TextureRegion[][] resumeBox, settingBox, quitBox;
-    private boolean settingsVisible = false;
+    private static boolean settingsVisible = false;
     private boolean resumeClicked = false;
     private boolean settingsClicked = false;
     private boolean quitClicked = false;
@@ -47,9 +47,9 @@ public class SettingsView implements Drawable, InputProcessor {
         Gdx.input.setInputProcessor(this);
     }
 
-    @Override
+   @Override
     public boolean keyDown(int keycode) {
-        if (keycode == Input.Keys.ESCAPE) {
+       if (keycode == Input.Keys.ESCAPE) {
             settingsVisible = !settingsVisible;
             return true;
         }
