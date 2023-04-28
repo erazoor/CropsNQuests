@@ -24,8 +24,9 @@ public class Main extends ApplicationAdapter{
 		this.inventory = new Inventory();
 		this.settings = new Settings();
 		this.drawables = new ArrayList<>();
-		this.drawables.add(new InventoryView(inventory));
 		this.drawables.add(new SettingsView(settings));
+		this.drawables.add(new InventoryView(inventory));
+
 	}
 
 	@Override

@@ -81,30 +81,30 @@ public class SettingsView implements Drawable, InputProcessor {
     }
 
     private boolean isQuitClicked(int screenX, int screenY) {
+        return IsButtonCLicked(screenY);
+    }
+
+    private boolean IsButtonCLicked(int y) {
         int xPos = 235;
-        int yPos = 292;
+        int yPos = y;
         int width = 178;
         int height = 50;
 
-        return screenX >= xPos && screenX <= xPos + width && screenY >= yPos && screenY <= yPos + height;
+        return y >= xPos && y <= xPos + width && y >= yPos && y <= yPos + height;
     }
 
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-        if(settingsVisible && isResumeClicked(screenX, screenY)) {
-            resumeClicked = true;
-        }
-        if(settingsVisible && isSettingsClicked(screenX, screenY)) {
-            settingsClicked = true;
-        }
-        if(settingsVisible && isQuitClicked(screenX, screenY)) {
-            quitClicked = true;
-        }
-        return false;
+        return settingsVisible && (isResumeClicked(screenX, screenY) ||
+                isSettingsClicked(screenX, screenY) ||
+                isQuitClicked(screenX, screenY));
     }
 
     @Override
     public boolean touchUp(int screenX, int screenY, int pointer, int button) {
+        /*return settingsVisible && (isResumeClicked(screenX, screenY) ||
+                isSettingsClicked(screenX, screenY) ||
+                isQuitClicked(screenX, screenY));*/
         if(settingsVisible && isResumeClicked(screenX, screenY)) {
             resumeClicked = false;
             settingsVisible = false;
