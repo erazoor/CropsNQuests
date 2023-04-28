@@ -1,5 +1,6 @@
 package fr.supdevinci.game.views;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.Texture;
@@ -7,7 +8,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import fr.supdevinci.game.ui.inventory.Inventory;
 
-public class InventoryView implements Drawable{
+public class InventoryView implements Drawable, InputProcessor{
     public final static int INV_BG_X_POS = 370;
     public final static int INV_BG_Y_POS = 0;
     public final static int INV_BG_WIDTH = 270;
@@ -32,14 +33,62 @@ public class InventoryView implements Drawable{
 
         txInventoryBox = new Texture(".././assets/game-assets/gui/buttons/Square Buttons 26x26.png");
         inventoryBox = new TextureRegion(txInventoryBox, txInventoryBox.getWidth()/2, txInventoryBox.getHeight()/4, txInventoryBox.getWidth()/2, txInventoryBox.getHeight()/4);
+
+        Gdx.input.setInputProcessor(this);
+    }
+
+    @Override
+    public boolean keyDown(int keycode) {
+        if (keycode == Input.Keys.I) {
+            inventoryVisible = !inventoryVisible;
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    public boolean keyUp(int keycode) {
+        return false;
+    }
+
+    @Override
+    public boolean keyTyped(char character) {
+        return false;
+    }
+
+    @Override
+    public boolean touchDown(int screenX, int screenY, int pointer, int button) {
+        return false;
+    }
+
+    @Override
+    public boolean touchUp(int screenX, int screenY, int pointer, int button) {
+        return false;
+    }
+
+    @Override
+    public boolean touchDragged(int screenX, int screenY, int pointer) {
+        return false;
+    }
+
+    @Override
+    public boolean mouseMoved(int screenX, int screenY) {
+        return false;
+    }
+
+    @Override
+    public boolean scrolled(float amountX, float amountY) {
+        return false;
     }
 
     @Override
     public void render(SpriteBatch batch) {
-        batch.draw(inventoryBg, INV_BG_X_POS, INV_BG_Y_POS, INV_BG_WIDTH, INV_BG_HEIGHT);
-        for(int i = 0; i < 4; i++) {
-            for(int j = 0; j < 5; j++) {
-                batch.draw(inventoryBox, INV_BOX_X_POS * i + INV_BG_X_POS + INV_BOX_OFFSET, INV_BOX_Y_POS * j + INV_BG_Y_POS + INV_BOX_OFFSET, INV_BOX_WIDTH, INV_BOX_HEIGHT);
+        if(inventoryVisible) {
+            batch.draw(inventoryBg, INV_BG_X_POS, INV_BG_Y_POS, INV_BG_WIDTH, INV_BG_HEIGHT);
+            for(int i = 0; i < 4; i++) {
+                for(int j = 0; j < 5; j++) {
+                    batch.draw(inventoryBox, INV_BOX_X_POS * i + INV_BG_X_POS + INV_BOX_OFFSET, INV_BOX_Y_POS * j + INV_BG_Y_POS + INV_BOX_OFFSET, INV_BOX_WIDTH, INV_BOX_HEIGHT);
+                }
             }
         }
     }
