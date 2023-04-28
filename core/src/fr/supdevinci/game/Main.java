@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 import com.badlogic.gdx.utils.ScreenUtils;
 import fr.supdevinci.game.map.GameBoard;
+import fr.supdevinci.game.npc.Npc;
 import fr.supdevinci.game.player.Player;
 import fr.supdevinci.game.player.views.Drawable;
 import fr.supdevinci.game.player.views.PlayerView;
@@ -16,14 +17,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Main extends ApplicationAdapter {
+
 	private final Player player;
 	private GameBoard map;
 	private final List<Drawable> drawables;
 	private SpriteBatch batch;
+	private Npc cow;
 
 	public Main() {
 		this.map = new GameBoard();
 		this.player = new Player(map);
+
 		this.drawables = new ArrayList<>();
 		this.drawables.add(new PlayerView(this.player));
 	}
@@ -32,6 +36,7 @@ public class Main extends ApplicationAdapter {
 	@Override
 	public void create () {
 		map.create();
+		cow = new Npc();
 
 		this.drawables.forEach(Drawable::create);
 		this.batch = new SpriteBatch();
@@ -51,8 +56,11 @@ public class Main extends ApplicationAdapter {
 		ScreenUtils.clear(0, 20, 100, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
+		cow.update();
+
 		batch.begin();
 		map.draw(batch); // TODO : Change it to a drawables list => change the map to a drawable
+		cow.draw(batch); // TODO : Change it to a drawables list => change the npc(s) to a drawable
 		drawables.forEach(drawable -> drawable.render(batch, delta));
 		batch.end();
 	}
