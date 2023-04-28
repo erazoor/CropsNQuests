@@ -1,4 +1,4 @@
-package fr.supdevinci.game.Entity;
+package fr.supdevinci.game.map.entity;
 
 public class ObjectFactory {
     private Entity tree;

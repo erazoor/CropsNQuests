@@ -1,19 +1,14 @@
-package fr.supdevinci.game;
+package fr.supdevinci.game.map;
 
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.math.Vector2;
-import fr.supdevinci.game.Entity.Entity;
-import fr.supdevinci.game.Entity.Ground;
-
-import java.util.HashMap;
+import fr.supdevinci.game.map.entity.Entity;
+import fr.supdevinci.game.map.entity.Ground;
 
 public class Tile {
     private Ground ground = null;
     private Entity object;
 
-    private char groundType;
+    char groundType;
     public final static int WIDTH = 16;
     public final static int HEIGHT = 16;
 
@@ -31,8 +26,7 @@ public class Tile {
     }
 
     public void drawObject(SpriteBatch batch, int x, int y) {
-        if(object != null)
-            batch.draw(object.getTexture(), x*WIDTH - (object.width/2) + (WIDTH/2) , y*HEIGHT-(object.height/2) + (HEIGHT/2), object.width, object.height);
+        if (object != null)
+            batch.draw(object.getTexture(), x * WIDTH - (object.width / 2) + (WIDTH / 2), y * HEIGHT - (object.height / 2) + (HEIGHT / 2), object.width, object.height);
     }
-
 }

@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 import com.badlogic.gdx.utils.ScreenUtils;
+import fr.supdevinci.game.map.GameBoard;
 import fr.supdevinci.game.player.Player;
 import fr.supdevinci.game.player.views.Drawable;
 import fr.supdevinci.game.player.views.PlayerView;
@@ -16,53 +17,52 @@ import java.util.List;
 
 public class Main extends ApplicationAdapter {
 	private final Player player;
-  	private final List<Drawable> drawables;
-  	private SpriteBatch batch;
+	private GameBoard map;
+	private final List<Drawable> drawables;
+	private SpriteBatch batch;
 
-  	//SpriteBatch batch;
-	  Texture img;
-	  GameBoard gameBoard;
-	  private Texture txGround;
-
-	  public Main() {
-		  this.player = new Player();
-		  this.drawables = new ArrayList<>();
-		  this.drawables.add(new PlayerView(this.player));
-	  }
+	public Main() {
+		this.map = new GameBoard();
+		this.player = new Player(map);
+		this.drawables = new ArrayList<>();
+		this.drawables.add(new PlayerView(this.player));
+	}
 
 
-	  @Override
-	  public void create () {
-		  txGround = new Texture("game-assets/tilesets/GroundTiles/NewTiles/DarkerGrassHillTiles.png");
-		  gameBoard = new GameBoard();
-		  gameBoard.create();
+	@Override
+	public void create () {
+		map.create();
 
-		  this.drawables.forEach(Drawable::create);
-		  this.batch = new SpriteBatch();
-	  }
+		this.drawables.forEach(Drawable::create);
+		this.batch = new SpriteBatch();
+	}
 
-	  @Override
-	  public void render () {
-		  /*if(player.isOnBorder()) {
-				player.reset();
-			}*/
-		  float delta = Gdx.graphics.getDeltaTime();
+	@Override
+	public void render () {
+		if(player.isOnWater()) {
+			player.reset();
+		}
+		if(player.isOutOfBound()){
+			player.reset();
+		}
 
-		  ScreenUtils.clear(0, 20, 100, 1);
-		  Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+		float delta = Gdx.graphics.getDeltaTime();
 
-		  batch.begin();
-		  gameBoard.draw(batch); // TODO : Change it to a drawables list
-		  drawables.forEach(drawable -> drawable.render(batch, delta));
-		  batch.end();
-	  }
+		ScreenUtils.clear(0, 20, 100, 1);
+		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+
+		batch.begin();
+		map.draw(batch); // TODO : Change it to a drawables list => change the map to a drawable
+		drawables.forEach(drawable -> drawable.render(batch, delta));
+		batch.end();
+	}
 
 
-	  @Override
-	  public void dispose () {
-		  batch.dispose();
-		  drawables.forEach(Drawable::dispose);
-	  }
+	@Override
+	public void dispose () {
+		batch.dispose();
+		drawables.forEach(Drawable::dispose);
+	}
 }
 
 

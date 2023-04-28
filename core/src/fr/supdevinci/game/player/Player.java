@@ -1,6 +1,7 @@
 package fr.supdevinci.game.player;
 
 import com.badlogic.gdx.math.Vector2;
+import fr.supdevinci.game.map.GameBoard;
 import fr.supdevinci.game.player.handler.StateHandler;
 import fr.supdevinci.game.player.state.IdleState;
 import fr.supdevinci.game.player.state.WalkState;
@@ -12,16 +13,15 @@ public class Player {
     public final static int STATE_MOVING = 1;
     public final static int STATE_CHOPPING = 2;
 
-    private final static float SPEED = 4f;
+    private final static float SPEED = 12f;
     private Vector2 actual, destination;
     private int idleDirection;
-    // private final Map map;
-
+    private final GameBoard map;
     private final StateHandler[] states;
     private StateHandler currentState;
 
-    public Player(/* Map map */) {
-        // this.map = map;
+    public Player(GameBoard map) {
+        this.map = map;
         this.states = new StateHandler[]{
                 new IdleState(),
                 new WalkState(SPEED),
@@ -33,13 +33,23 @@ public class Player {
     public Vector2 getPosition() {
         return actual;
     }
-
-    public Boolean isOnBorder() { /* TODO with map */
-        return null;
+    public Vector2 getPreviousPosition() {
+        if (actual == null) {
+            return new Vector2(50f, 50f);
+        }
+        if (actual.x == destination.x) {
+            return new Vector2(actual.x, actual.y - 1);
+        } else {
+            return new Vector2(actual.x - 1, actual.y);
+        }
     }
 
-    public Boolean isOnWater() { /* TODO with map */
-        return null;
+    public Boolean isOnWater() {
+        return map.isWater((int) actual.x, (int) actual.y);
+    }
+
+    public Boolean isOutOfBound() {
+        return map.isOutOfBound((int) actual.x, (int) actual.y);
     }
 
     public void changeState(int newState) {
@@ -48,7 +58,7 @@ public class Player {
 
     public void reset() {
         this.idleDirection = Direction.DOWN;
-        this.actual = new Vector2(50f, 50f);
+        this.actual = new Vector2(getPreviousPosition());
         this.destination = this.actual.cpy();
         changeState(STATE_IDLE);
     }
@@ -87,12 +97,10 @@ public class Player {
             int destX = (int) actual.x + directionX;
             int destY = (int) actual.y + directionY;
 
-            this.destination.set(destX, destY);
-            changeState(Player.STATE_MOVING);
-            /*if(!map.isWall(destX, destY)) {
+            if(!map.isWater(destX, destY) && !map.isOutOfBound(destX, destY)) {
                 this.destination.set(destX, destY);
                 changeState(Player.STATE_MOVING);
-            }*/
+            }
         }
     }
 
