@@ -1,12 +1,9 @@
-package fr.supdevinci.game;
+package fr.supdevinci.game.map;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import fr.supdevinci.game.Entity.Entity;
-import fr.supdevinci.game.Entity.ObjectFactory;
-import fr.supdevinci.game.Entity.Ground;
-
-import java.util.HashMap;
+import fr.supdevinci.game.map.entity.Entity;
+import fr.supdevinci.game.map.entity.ObjectFactory;
+import fr.supdevinci.game.map.entity.Ground;
 
 public class GameBoard {
     ObjectFactory entityFactory;
@@ -113,5 +110,14 @@ public class GameBoard {
             }
         }
         return tilesArray;
+    }
+
+    public boolean isWater(int x, int y) {
+        try {
+            return gameboard[x][y].getTileType() == '0';
+        } catch (Exception e) {
+            System.out.println("Error: " + e);
+            return false;
+        }
     }
 }

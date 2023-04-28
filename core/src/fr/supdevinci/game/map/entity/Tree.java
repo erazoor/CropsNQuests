@@ -1,9 +1,7 @@
-package fr.supdevinci.game.Entity;
+package fr.supdevinci.game.map.entity;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.math.Vector2;
-import fr.supdevinci.game.Entity.Entity;
 
 public class Tree extends Entity {
 

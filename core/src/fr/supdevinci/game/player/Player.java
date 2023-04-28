@@ -1,6 +1,7 @@
 package fr.supdevinci.game.player;
 
 import com.badlogic.gdx.math.Vector2;
+import fr.supdevinci.game.map.GameBoard;
 import fr.supdevinci.game.player.handler.StateHandler;
 import fr.supdevinci.game.player.state.IdleState;
 import fr.supdevinci.game.player.state.WalkState;
@@ -12,16 +13,15 @@ public class Player {
     public final static int STATE_MOVING = 1;
     public final static int STATE_CHOPPING = 2;
 
-    private final static float SPEED = 4f;
+    private final static float SPEED = 8f;
     private Vector2 actual, destination;
     private int idleDirection;
-    // private final Map map;
-
+    private final GameBoard map;
     private final StateHandler[] states;
     private StateHandler currentState;
 
-    public Player(/* Map map */) {
-        // this.map = map;
+    public Player(GameBoard map) {
+        this.map = map;
         this.states = new StateHandler[]{
                 new IdleState(),
                 new WalkState(SPEED),
@@ -34,12 +34,8 @@ public class Player {
         return actual;
     }
 
-    public Boolean isOnBorder() { /* TODO with map */
-        return null;
-    }
-
-    public Boolean isOnWater() { /* TODO with map */
-        return null;
+    public Boolean isOnWater() {
+        return map.isWater((int) actual.x, (int) actual.y);
     }
 
     public void changeState(int newState) {
@@ -89,10 +85,10 @@ public class Player {
 
             this.destination.set(destX, destY);
             changeState(Player.STATE_MOVING);
-            /*if(!map.isWall(destX, destY)) {
+            if(!map.isWater(destX, destY)) {
                 this.destination.set(destX, destY);
                 changeState(Player.STATE_MOVING);
-            }*/
+            }
         }
     }
 
